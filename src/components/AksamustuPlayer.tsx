@@ -145,25 +145,26 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
               </div>
 
               {/* Controls Bar */}
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 sm:gap-3 mt-4">
                 
                 {/* Main Play / Pause Button */}
                 <button
                   id="soundtrack-play-btn"
                   onClick={() => {
+                    soundManager.initContext();
                     soundManager.playPop();
                     onTogglePlay();
                   }}
-                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold text-sm shadow-xl shadow-purple-950 flex items-center gap-2.5 transition-all hover:scale-105"
+                  className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold text-xs sm:text-sm shadow-xl shadow-purple-950 flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
                 >
                   {isPlaying ? (
                     <>
-                      <Pause className="w-4 h-4 fill-white" />
-                      <span>Şarkıyı Duraklat</span>
+                      <Pause className="w-4 h-4 fill-white shrink-0" />
+                      <span>Müziği Duraklat</span>
                     </>
                   ) : (
                     <>
-                      <Play className="w-4 h-4 fill-white" />
+                      <Play className="w-4 h-4 fill-white shrink-0" />
                       <span>Yalın — Akşamüstü Çal ♫</span>
                     </>
                   )}
@@ -172,20 +173,20 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
                 {/* Video Clip Toggle */}
                 <button
                   onClick={() => setShowVideo(!showVideo)}
-                  className={`px-4 py-3 rounded-2xl border text-xs font-mono-code flex items-center gap-1.5 transition-all ${
+                  className={`px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-2xl border text-xs font-mono-code flex items-center gap-1.5 transition-all ${
                     showVideo
                       ? 'bg-pink-900/60 border-pink-500/50 text-white'
                       : 'bg-purple-950/40 border-purple-800/40 text-purple-300 hover:text-white'
                   }`}
                 >
-                  <Video className="w-4 h-4 text-pink-400" />
-                  <span>{showVideo ? 'Klibi Gizle' : 'Klibi İzle'}</span>
+                  <Video className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-400 shrink-0" />
+                  <span>{showVideo ? 'Klibi Gizle' : 'Orijinal Klip'}</span>
                 </button>
 
                 {/* Mute SFX / Audio toggle */}
                 <button
                   onClick={onToggleMute}
-                  className="p-3 rounded-2xl bg-purple-950/60 hover:bg-purple-900/60 border border-purple-700/40 text-purple-300 hover:text-white transition-all"
+                  className="p-2.5 sm:p-3 rounded-2xl bg-purple-950/60 hover:bg-purple-900/60 border border-purple-700/40 text-purple-300 hover:text-white transition-all"
                   title={isMuted ? 'Sesi Aç' : 'Sesi Kıs'}
                 >
                   {isMuted ? <VolumeX className="w-4 h-4 text-pink-400" /> : <Volume2 className="w-4 h-4 text-purple-200" />}
@@ -194,15 +195,38 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
                 {/* Lyrics toggle */}
                 <button
                   onClick={() => setShowLyrics(!showLyrics)}
-                  className={`px-3 py-3 rounded-2xl border text-xs font-mono-code flex items-center gap-1.5 transition-all ${
+                  className={`px-3 py-2.5 sm:py-3 rounded-2xl border text-xs font-mono-code flex items-center gap-1.5 transition-all ${
                     showLyrics
                       ? 'bg-purple-900/60 border-purple-500/50 text-purple-100'
                       : 'bg-purple-950/40 border-purple-800/40 text-purple-400'
                   }`}
                 >
-                  <ListMusic className="w-3.5 h-3.5" />
-                  <span>{showLyrics ? 'Sözler Açık' : 'Sözleri Göster'}</span>
+                  <ListMusic className="w-3.5 h-3.5 shrink-0" />
+                  <span>{showLyrics ? 'Sözler' : 'Sözler'}</span>
                 </button>
+
+                {/* Direct External Links */}
+                <a
+                  href="https://www.youtube.com/watch?v=h0mQWe-EPcw"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 sm:p-3 rounded-2xl bg-red-950/50 hover:bg-red-900/60 border border-red-700/40 text-red-300 hover:text-white transition-all flex items-center gap-1 text-xs font-mono-code"
+                  title="YouTube'da Dinle"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-red-400" />
+                  <span className="hidden sm:inline">YouTube</span>
+                </a>
+
+                <a
+                  href="https://open.spotify.com/search/Yal%C4%B1n%20Ak%C5%9Fam%C3%BCst%C3%BC"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 sm:p-3 rounded-2xl bg-emerald-950/50 hover:bg-emerald-900/60 border border-emerald-700/40 text-emerald-300 hover:text-white transition-all flex items-center gap-1 text-xs font-mono-code"
+                  title="Spotify'da Dinle"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="hidden sm:inline">Spotify</span>
+                </a>
 
               </div>
 
