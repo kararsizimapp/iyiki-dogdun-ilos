@@ -1,0 +1,6 @@
+{
+  "name": "İloş Birthday Universe",
+  "description": "Selin İlayda Güneş (İloş) için 28. yaş günü interaktif deneyimi ve dijital evreni.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
