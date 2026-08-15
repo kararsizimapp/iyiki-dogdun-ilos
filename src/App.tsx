@@ -4,6 +4,7 @@ import { Trophy } from 'lucide-react';
 import { initialAchievements } from './data/ilosData';
 import { Achievement } from './types';
 import { soundManager } from './utils/audio';
+import { youtubeMusic } from './utils/youtubePlayer';
 
 import { Preloader } from './components/Preloader';
 import { CountdownLock } from './components/CountdownLock';
@@ -65,8 +66,16 @@ export default function App() {
   const [morLevel, setMorLevel] = useState(1);
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Scroll progress tracker
+  // Scroll progress tracker & YouTube Player initialization
   useEffect(() => {
+    youtubeMusic.initPlayer('youtube-global-player');
+    const unsubscribe = youtubeMusic.subscribe((playing) => {
+      setIsPlayingMusic(playing);
+      if (playing) {
+        unlockAchievement('aksamustu-dinleyici');
+      }
+    });
+
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       if (totalScroll > 0) {
@@ -76,7 +85,10 @@ export default function App() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      unsubscribe();
+    };
   }, []);
 
   const unlockAchievement = (id: string) => {
@@ -104,18 +116,15 @@ export default function App() {
   };
 
   const handleToggleMusic = () => {
-    soundManager.toggleMusic((playing) => {
-      setIsPlayingMusic(playing);
-      if (playing) {
-        unlockAchievement('aksamustu-dinleyici');
-      }
-    });
+    soundManager.playPop();
+    youtubeMusic.toggle();
   };
 
   const handleToggleMute = () => {
     const nextMuted = !isMuted;
     setIsMuted(nextMuted);
     soundManager.setMuted(nextMuted);
+    youtubeMusic.setMuted(nextMuted);
   };
 
   const handleIncreaseMor = () => {
@@ -127,6 +136,24 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0b0514] text-[#f4effa] selection:bg-purple-500 selection:text-white relative">
       
+      {/* Persistent Official YouTube IFrame Player (Off-screen, non-throttled for iOS Safari & Android Chrome) */}
+      <div
+        id="youtube-global-wrapper"
+        aria-hidden="true"
+        style={{
+          position: 'fixed',
+          left: '-9999px',
+          top: '-9999px',
+          width: '320px',
+          height: '240px',
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          zIndex: -1
+        }}
+      >
+        <div id="youtube-global-player" />
+      </div>
+
       {/* Preloader */}
       {!isLoaded && <Preloader onComplete={() => setIsLoaded(true)} />}
 
@@ -139,6 +166,7 @@ export default function App() {
             }
             setIsLocked(false);
             soundManager.playAchievement();
+            youtubeMusic.play();
           }}
           isPlayingMusic={isPlayingMusic}
           onToggleMusic={handleToggleMusic}
@@ -166,7 +194,9 @@ export default function App() {
             <HeroScene
               morLevel={morLevel}
               onIncreaseMor={handleIncreaseMor}
-              onEnterUniverse={() => {}}
+              onEnterUniverse={() => {
+                youtubeMusic.play();
+              }}
             />
 
             {/* Embedded Yalın - Akşamüstü Official Soundtrack Section */}

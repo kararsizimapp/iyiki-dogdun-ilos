@@ -29,9 +29,6 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
   const [showLyrics, setShowLyrics] = useState(true);
   const [showVideo, setShowVideo] = useState(false);
 
-  // Auto show video if user toggles play or requests it
-  const isPlayerActive = isPlaying || showVideo;
-
   // Cycle lyrics when playing
   useEffect(() => {
     if (!isPlaying) return;
@@ -239,9 +236,9 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
 
           </div>
 
-          {/* YouTube Real Player Embed Section (Shows when Playing or Video is toggled) */}
+          {/* YouTube Real Player Embed Section (Shows when Video is toggled) */}
           <AnimatePresence>
-            {isPlayerActive && (
+            {showVideo && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
