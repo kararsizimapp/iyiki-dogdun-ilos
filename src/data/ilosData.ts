@@ -160,6 +160,51 @@ export const initialAchievements: Achievement[] = [
     iconName: 'Car',
     unlocked: false,
     category: 'general'
+  },
+  {
+    id: 'mustafanin-cozumu',
+    title: 'Mustafa Çözüm Reçetesi',
+    description: 'Günün moduna göre Mustafa Can\'dan özel reçete ve VIP çözüm aldın.',
+    hint: 'Çözüm üretici modülünde bir çözüm talep et',
+    iconName: 'Sparkles',
+    unlocked: false,
+    category: 'general'
+  },
+  {
+    id: 'en-guzel-kadin',
+    title: 'Evrenin En Güzel Kadını',
+    description: 'Mustafa Can’ın gözündeki 6 tartışmasız kanıtı inceleyip onayladın.',
+    hint: 'En Güzel Kadın modülünde bir kanıtı beğen',
+    iconName: 'Heart',
+    unlocked: false,
+    category: 'general'
+  },
+  {
+    id: 'mor-tarot',
+    title: 'Mistik Mor Tarotçu',
+    description: 'İloş Mor Tarot destesinden kader kartını çektin ve günün kehanetini okudun.',
+    hint: 'Tarot modülünden bir kart aç',
+    iconName: 'Moon',
+    unlocked: false,
+    category: 'secret'
+  },
+  {
+    id: 'mor-orkide-usta',
+    title: 'Mor Orkide Bahçıvanı',
+    description: 'Küçük tohumu sevgiyle ve suyla besleyip Işıltılı İloş Orkidesine dönüştürdün.',
+    hint: 'Sanal orkideyi son aşamasına kadar sula',
+    iconName: 'Flower2',
+    unlocked: false,
+    category: 'garden'
+  },
+  {
+    id: 'gunes-enerjisi',
+    title: 'Güneş Işığı Enerjisi',
+    description: 'İloş Güneş Modu ile altın ışık huzmelerinden %100 pozitif enerji ve D vitamini yükledin.',
+    hint: 'Güneş modülünden enerji al butonuna tıkla',
+    iconName: 'Sun',
+    unlocked: false,
+    category: 'secret'
   }
 ];
 
@@ -252,6 +297,16 @@ export const approvedMenuItems: ApprovedMenuItem[] = [
     tag: 'Resmi İçecek',
     bgGradient: 'from-orange-950/40 via-purple-950/50 to-purple-900/30',
     description: 'Buz gibi, şeftali aromalı ferahlık. Masada durduğu anda bitmesi sadece birkaç dakikadır.'
+  },
+  {
+    id: 'browni',
+    title: 'Islak Browni Kek',
+    subtitle: 'Çikolata Patlaması: 100/100',
+    ratingText: 'Sıcak & Akışkan Kalp',
+    emoji: '🍫',
+    tag: 'Tatlı Aşkı',
+    bgGradient: 'from-amber-950/60 via-purple-950/50 to-pink-950/40',
+    description: 'Fırından yeni çıkmış, içi ıslak ve akışkan Belçika çikolatalı nefis browni. Bir dilim alındığı an tüm stres sıfırlanır.'
   },
   {
     id: 'kahve',

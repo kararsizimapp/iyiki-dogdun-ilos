@@ -36,23 +36,20 @@ export const CountdownLock: React.FC<CountdownLockProps> = ({
   const [secretPass, setSecretPass] = useState('');
   const [secretError, setSecretError] = useState(false);
 
-  // Target: 20 August 2026 00:00:00 (Local Turkish Time)
+  // Target: 20 August 2026 00:00:00 (Guaranteed Turkish Time UTC+3 & Local Time)
   useEffect(() => {
     const calculateTime = () => {
-      const now = new Date();
-      // Year 2026, August (index 7), 20th day, 00:00:00
-      let target = new Date(2026, 7, 20, 0, 0, 0);
+      const now = Date.now();
+      // Target: 20 August 2026 00:00:00 Turkish Time (GMT+3) & Local Device Midnight
+      const targetTrt = new Date('2026-08-20T00:00:00+03:00').getTime();
+      const targetLocal = new Date(2026, 7, 20, 0, 0, 0).getTime();
+      const targetTime = Math.min(targetTrt, targetLocal);
 
-      // If current time is after 20 Aug 2026, check next year
-      if (now.getTime() > target.getTime() + 86400000) {
-        target = new Date(now.getFullYear() + 1, 7, 20, 0, 0, 0);
-      }
-
-      const diff = target.getTime() - now.getTime();
+      const diff = targetTime - now;
 
       if (diff <= 0) {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, totalMs: 0 });
-        onUnlockPreview(); // Auto-unlock when target date arrives
+        onUnlockPreview(); // Auto-unlock immediately when target date arrives
       } else {
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
@@ -69,9 +66,9 @@ export const CountdownLock: React.FC<CountdownLockProps> = ({
 
   const handleSecretSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Allow easy unlock for Mustafa Can / testing with password or bypass
-    const clean = secretPass.trim().toLowerCase();
-    if (clean === 'mustafa' || clean === 'ilos' || clean === '1998' || clean === '28' || clean === 'can') {
+    // Strictly secure passcode: 27051996 for Mustafa Can
+    const clean = secretPass.trim();
+    if (clean === '27051996') {
       soundManager.playAchievement();
       onUnlockPreview();
     } else {
@@ -84,20 +81,6 @@ export const CountdownLock: React.FC<CountdownLockProps> = ({
   return (
     <div className="min-h-screen bg-[#090412] text-white flex flex-col items-center justify-between p-4 sm:p-8 relative overflow-hidden stars-bg">
       
-      {/* Background YouTube Audio / Video Stream (Yalın - Akşamüstü) */}
-      <div className="fixed -bottom-96 -left-96 w-10 h-10 opacity-0 pointer-events-none overflow-hidden">
-        {isPlayingMusic && (
-          <iframe
-            id="youtube-audio-stream-locked"
-            width="320"
-            height="240"
-            src="https://www.youtube-nocookie.com/embed/h0mQWe-EPcw?autoplay=1&loop=1&playlist=h0mQWe-EPcw&enablejsapi=1"
-            title="Yalın - Akşamüstü"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          />
-        )}
-      </div>
-
       {/* Atmospheric Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-purple-700/20 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-pink-600/15 rounded-full blur-[120px] pointer-events-none" />
@@ -237,7 +220,7 @@ export const CountdownLock: React.FC<CountdownLockProps> = ({
       {/* Footer info */}
       <footer className="w-full max-w-4xl text-center text-xs text-purple-400/50 font-mono-code z-10 pt-6 border-t border-purple-900/30 flex flex-col sm:flex-row items-center justify-between gap-2">
         <span>Kilit Açılış Tarihi: 20 Ağustos 2026 • 00:00</span>
-        <span className="text-pink-400/80 font-serif-italic">Mustafa Can & İloş 💜</span>
+        <span className="text-pink-400/80 font-serif-italic">İloş 💜</span>
       </footer>
 
       {/* Secret Password / Instant Unlock Modal */}
@@ -255,54 +238,41 @@ export const CountdownLock: React.FC<CountdownLockProps> = ({
               </div>
 
               <h3 className="text-xl font-display font-bold text-white mb-1">
-                Mustafa Can Önizleme
+                Mustafa Can Özel Giriş
               </h3>
               <p className="text-xs text-purple-300/80 mb-6">
-                Siteyi test etmek veya kilidi kaldırmak için şifreyi girin veya doğrudan butona tıklayın.
+                Bu alana yalnızca Mustafa Can erişebilir. Kilidi açmak için özel PIN kodunu giriniz.
               </p>
 
               <form onSubmit={handleSecretSubmit} className="space-y-4">
                 <input
-                  type="text"
+                  type="password"
                   value={secretPass}
                   onChange={(e) => setSecretPass(e.target.value)}
-                  placeholder="Şifre (örn: mustafa / ilos / 1998)"
-                  className="w-full px-4 py-3 rounded-xl bg-purple-950/80 border border-purple-700/50 text-white placeholder-purple-400/40 text-sm text-center focus:outline-none focus:border-pink-500 font-mono-code"
+                  placeholder="Özel PIN Kodu"
+                  className="w-full px-4 py-3 rounded-xl bg-purple-950/80 border border-purple-700/50 text-white placeholder-purple-400/40 text-sm text-center focus:outline-none focus:border-pink-500 font-mono-code tracking-widest text-lg"
                   autoFocus
                 />
 
                 {secretError && (
                   <p className="text-xs text-pink-400 font-mono-code animate-shake">
-                    Hatalı şifre. Tekrar deneyin veya doğrudan açın.
+                    Geçersiz şifre! Erişim reddedildi.
                   </p>
                 )}
 
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    className="flex-1 py-3 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold text-xs shadow-lg hover:from-pink-500 hover:to-purple-500 transition-all"
-                  >
-                    Kilidi Aç
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      soundManager.playAchievement();
-                      onUnlockPreview();
-                    }}
-                    className="px-4 py-3 rounded-xl bg-purple-900/60 hover:bg-purple-800 border border-purple-700/40 text-purple-200 text-xs font-mono-code"
-                  >
-                    Doğrudan Aç
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-pink-600 via-fuchsia-600 to-purple-600 text-white font-bold text-xs shadow-lg hover:from-pink-500 hover:to-purple-500 transition-all uppercase tracking-wider"
+                >
+                  Giriş Yap ve Kilidi Aç
+                </button>
 
                 <button
                   type="button"
                   onClick={() => setShowSecretModal(false)}
-                  className="text-xs text-purple-400 hover:text-white pt-2 block mx-auto"
+                  className="text-xs text-purple-400 hover:text-white pt-1 block mx-auto"
                 >
-                  Vazgeç
+                  Geri Dön
                 </button>
               </form>
             </motion.div>

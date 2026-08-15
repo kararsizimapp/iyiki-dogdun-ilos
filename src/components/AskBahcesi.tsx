@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Heart, Sparkles, Shield, Droplets, Utensils } from 'lucide-react';
+import { Heart, Sparkles, Shield, Droplets, Utensils, Award, Fish, Bone } from 'lucide-react';
 import { soundManager } from '../utils/audio';
+import { launchMorKonfeti } from '../utils/confetti';
 
 interface AskBahcesiProps {
   onUnlockAchievement: (id: string) => void;
 }
 
 export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) => {
-  const [foodCount, setFoodCount] = useState(3);
+  const [catFeedCount, setCatFeedCount] = useState(4);
+  const [dogFeedCount, setDogFeedCount] = useState(4);
+  const [waterBowlLevel, setWaterBowlLevel] = useState(100);
   const [catSpeech, setCatSpeech] = useState<string | null>(null);
   const [dogSpeech, setDogSpeech] = useState<string | null>(null);
-  const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [catPurring, setCatPurring] = useState(false);
+  const [dogHappy, setDogHappy] = useState(false);
+  const [hearts, setHearts] = useState<{ id: number; text: string; x: number; y: number }[]>([]);
   const [protectionBadgeClicked, setProtectionBadgeClicked] = useState(false);
 
-  const handleFeed = (e: React.MouseEvent<HTMLButtonElement>) => {
-    soundManager.playPop();
-    setFoodCount((prev) => prev + 1);
-    onUnlockAchievement('pati-dostu');
-
-    // Spawn floating heart
+  const spawnFloatingHeart = (e: React.MouseEvent<HTMLElement>, text = '💜') => {
     const rect = e.currentTarget.getBoundingClientRect();
     const newHeart = {
-      id: Date.now(),
+      id: Date.now() + Math.random(),
+      text,
       x: rect.left + rect.width / 2,
       y: rect.top
     };
@@ -32,19 +33,63 @@ export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) =
     }, 1500);
   };
 
-  const handleCatClick = () => {
-    soundManager.playMeow();
-    setCatSpeech('“Rahatsız etme. İloş’un misafiriyim.” 🐾');
+  const handleFeedCat = (e: React.MouseEvent<HTMLButtonElement>) => {
+    soundManager.playPop();
+    setCatFeedCount((prev) => prev + 1);
+    setCatPurring(true);
+    setCatSpeech('“Mırrr... En sevdiğim somonlu mama! Teşekkürler İloş 🐾”');
+    spawnFloatingHeart(e, '🐟 +10 Sevgi');
     onUnlockAchievement('pati-dostu');
-    setTimeout(() => setCatSpeech(null), 3500);
+    setTimeout(() => {
+      setCatPurring(false);
+      setTimeout(() => setCatSpeech(null), 3000);
+    }, 1500);
   };
 
-  const handleDogClick = () => {
-    soundManager.playBark();
-    setDogSpeech('“Hav! İloş az önce geçti, buralar güvende.” 🐶');
+  const handleFeedDog = (e: React.MouseEvent<HTMLButtonElement>) => {
+    soundManager.playPop();
+    setDogFeedCount((prev) => prev + 1);
+    setDogHappy(true);
+    setDogSpeech('“Hav hav! Çıtır ödül kemiği! İloş dünyanın en tatlı insanı! 🐶”');
+    spawnFloatingHeart(e, '🦴 +10 Sevgi');
     onUnlockAchievement('pati-dostu');
-    setTimeout(() => setDogSpeech(null), 3500);
+    setTimeout(() => {
+      setDogHappy(false);
+      setTimeout(() => setDogSpeech(null), 3000);
+    }, 1500);
   };
+
+  const handleFillWater = (e: React.MouseEvent<HTMLButtonElement>) => {
+    soundManager.playAchievement();
+    setWaterBowlLevel(100);
+    spawnFloatingHeart(e, '💧 Taze Su Dolduruldu!');
+  };
+
+  const handleCatClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    soundManager.playMeow();
+    setCatPurring(true);
+    setCatSpeech('“Mırrr... İloş beni okşadı, dünyadaki en mutlu kediyim.” 🐾');
+    spawnFloatingHeart(e, '💜');
+    onUnlockAchievement('pati-dostu');
+    setTimeout(() => {
+      setCatPurring(false);
+      setTimeout(() => setCatSpeech(null), 3500);
+    }, 2000);
+  };
+
+  const handleDogClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    soundManager.playBark();
+    setDogHappy(true);
+    setDogSpeech('“Kuyruğum pervaneye döndü! İloş geldi, neşemiz yerine geldi!” 🐕');
+    spawnFloatingHeart(e, '💜');
+    onUnlockAchievement('pati-dostu');
+    setTimeout(() => {
+      setDogHappy(false);
+      setTimeout(() => setDogSpeech(null), 3500);
+    }, 2000);
+  };
+
+  const totalPoints = (catFeedCount + dogFeedCount) * 10;
 
   return (
     <section id="ask-bahcesi-section" className="py-24 px-4 sm:px-6 relative overflow-hidden">
@@ -59,13 +104,13 @@ export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) =
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-950/60 border border-pink-700/40 text-pink-300 text-xs font-mono-code mb-3">
             <Heart className="w-3.5 h-3.5 text-pink-400 fill-pink-400/30" />
-            <span>SAHNE 05 • EN SAF BÖLÜM</span>
+            <span>SAHNE 05 • CANLI BESLEME SİMÜLATÖRÜ</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
-            Aşk Bahçesi
+            Aşk Bahçesi & Can Dostlar 🐾💜
           </h2>
           <p className="text-sm sm:text-base text-purple-200/80 max-w-lg mx-auto mt-2 font-medium">
-            Bazıları çiçek yetiştirir. İloş biraz daha ileri gitmiş olabilir.
+            Kedilere somonlu mama, köpeklere çıtır kemik ver; sevdikçe mırıldamalarını dinle.
           </p>
         </div>
 
@@ -82,13 +127,13 @@ export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) =
               className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-purple-950/70 hover:bg-purple-900/60 border border-purple-700/40 text-purple-200 text-xs font-mono-code transition-all"
             >
               <Shield className="w-4 h-4 text-pink-400" />
-              <span>🐾 Resmi Koruma Bildirimi</span>
+              <span>🐾 İloş Şefkat Sertifikası</span>
             </button>
 
             <div className="flex items-center gap-2 text-xs font-mono-code text-pink-300">
-              <span>Toplam Sevgi Dolumu:</span>
-              <span className="px-2 py-0.5 rounded bg-pink-900/50 border border-pink-700/40 font-bold">
-                {foodCount * 10} Kalp 💜
+              <span>Toplam Sevgi Skoru:</span>
+              <span className="px-3 py-1 rounded-full bg-pink-900/50 border border-pink-700/40 font-bold text-white">
+                {totalPoints} Kalp 💜
               </span>
             </div>
           </div>
@@ -114,21 +159,38 @@ export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) =
             <motion.div
               whileHover={{ y: -3 }}
               onClick={handleCatClick}
-              className="relative p-6 rounded-2xl bg-purple-950/40 border border-purple-800/40 hover:border-pink-500/50 transition-all cursor-pointer flex flex-col items-center text-center group"
+              className={`relative p-6 rounded-2xl border transition-all cursor-pointer flex flex-col items-center text-center group ${
+                catPurring
+                  ? 'bg-pink-950/60 border-pink-500 shadow-xl shadow-pink-950'
+                  : 'bg-purple-950/40 border-purple-800/40 hover:border-pink-500/50'
+              }`}
             >
               <div className="text-6xl mb-3 group-hover:scale-110 transition-transform">
                 🐈‍⬛
               </div>
               <h4 className="text-base font-bold text-white mb-1">
-                Aşk Bahçesi Kedisi
+                Pamuk (Aşk Bahçesi Kedisi)
               </h4>
               <p className="text-xs text-purple-300/70 mb-3">
                 Güneşin vurduğu en yumuşak minderde keyif yapan misafir.
               </p>
               
-              <span className="text-[11px] font-mono-code text-pink-400/80 underline decoration-pink-500/40">
-                (Tıkla & Miyavlat)
-              </span>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-[11px] font-mono-code px-2.5 py-0.5 rounded-full bg-purple-900/60 text-purple-200">
+                  {catFeedCount} Porsiyon Somon 🐟
+                </span>
+              </div>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFeedCat(e);
+                }}
+                className="px-4 py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-md transition-all hover:scale-105"
+              >
+                <Fish className="w-3.5 h-3.5" />
+                <span>Somonlu Mama Ver</span>
+              </button>
 
               {/* Cat Speech Bubble */}
               <AnimatePresence>
@@ -149,21 +211,38 @@ export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) =
             <motion.div
               whileHover={{ y: -3 }}
               onClick={handleDogClick}
-              className="relative p-6 rounded-2xl bg-purple-950/40 border border-purple-800/40 hover:border-purple-500/50 transition-all cursor-pointer flex flex-col items-center text-center group"
+              className={`relative p-6 rounded-2xl border transition-all cursor-pointer flex flex-col items-center text-center group ${
+                dogHappy
+                  ? 'bg-purple-900/60 border-purple-400 shadow-xl shadow-purple-950'
+                  : 'bg-purple-950/40 border-purple-800/40 hover:border-purple-500/50'
+              }`}
             >
               <div className="text-6xl mb-3 group-hover:scale-110 transition-transform">
                 🐕
               </div>
               <h4 className="text-base font-bold text-white mb-1">
-                Bahçenin Neşeli Köpeği
+                Çakıl (Bahçenin Neşeli Köpeği)
               </h4>
               <p className="text-xs text-purple-300/70 mb-3">
-                İloş'u kapıda görünce kuyruğu pervaneye dönen dost.
+                İloş'u görünce sevinçten kuyruğu pervaneye dönen sadık dost.
               </p>
               
-              <span className="text-[11px] font-mono-code text-purple-400/80 underline decoration-purple-500/40">
-                (Tıkla & Sev)
-              </span>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-[11px] font-mono-code px-2.5 py-0.5 rounded-full bg-purple-900/60 text-purple-200">
+                  {dogFeedCount} Ödül Kemiği 🦴
+                </span>
+              </div>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFeedDog(e);
+                }}
+                className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-md transition-all hover:scale-105"
+              >
+                <Bone className="w-3.5 h-3.5" />
+                <span>Ödül Kemiği Ver</span>
+              </button>
 
               {/* Dog Speech Bubble */}
               <AnimatePresence>
@@ -182,29 +261,28 @@ export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) =
 
           </div>
 
-          {/* Interactive Food Bowl (Mama Kabı) */}
+          {/* Fresh Water Basin (Taze Su Havuzu) */}
           <div className="bg-purple-950/60 border border-purple-700/40 rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3 text-left">
-              <div className="w-12 h-12 rounded-xl bg-pink-900/50 border border-pink-600/40 flex items-center justify-center text-2xl">
-                🍲
+              <div className="w-12 h-12 rounded-xl bg-cyan-950/80 border border-cyan-600/40 flex items-center justify-center text-2xl">
+                🥣
               </div>
               <div>
                 <h5 className="text-sm font-bold text-white">
-                  Aşk Bahçesi Mama Kabı
+                  Taze Su Kabı
                 </h5>
-                <p className="text-xs text-purple-300/70">
-                  Şu an kapta: <strong className="text-pink-300">{foodCount} porsiyon</strong> taze mama var.
+                <p className="text-xs text-cyan-300/80 font-mono-code">
+                  Su Seviyesi: %{waterBowlLevel} • Serin ve Berrak
                 </p>
               </div>
             </div>
 
             <button
-              id="feed-animals-btn"
-              onClick={handleFeed}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white text-xs font-semibold shadow-md shadow-pink-950 flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
+              onClick={handleFillWater}
+              className="px-5 py-2.5 rounded-xl bg-cyan-800 hover:bg-cyan-700 text-cyan-100 text-xs font-semibold flex items-center gap-2 transition-all hover:scale-105"
             >
-              <Utensils className="w-4 h-4 text-pink-200" />
-              <span>Mama Ekle (+Sevgi)</span>
+              <Droplets className="w-4 h-4 text-cyan-300" />
+              <span>Taze Su Tazele</span>
             </button>
           </div>
 
@@ -225,15 +303,16 @@ export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) =
         <motion.div
           key={h.id}
           initial={{ opacity: 1, y: 0, scale: 0.8 }}
-          animate={{ opacity: 0, y: -60, scale: 1.4 }}
+          animate={{ opacity: 0, y: -60, scale: 1.3 }}
           transition={{ duration: 1.2, ease: 'easeOut' }}
-          className="fixed pointer-events-none text-pink-400 z-50 text-2xl font-bold"
+          className="fixed pointer-events-none text-pink-300 z-50 text-sm font-mono-code font-bold drop-shadow-lg"
           style={{ left: h.x, top: h.y }}
         >
-          💜
+          {h.text}
         </motion.div>
       ))}
 
     </section>
   );
 };
+

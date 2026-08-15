@@ -13,8 +13,18 @@ export const ApprovedMenu: React.FC<ApprovedMenuProps> = ({ onUnlockAchievement 
   const [kunefeCheeseStretched, setKunefeCheeseStretched] = useState(false);
   const [isIceTeaShattered, setIsIceTeaShattered] = useState(false);
   const [burgerStacked, setBurgerStacked] = useState(false);
+  const [brownieBites, setBrownieBites] = useState(0);
   const [showEmergencyModal, setShowEmergencyModal] = useState(false);
   const [emergencyStep, setEmergencyStep] = useState(0);
+
+  const handleBrownieClick = () => {
+    soundManager.playPop();
+    const next = brownieBites + 1;
+    setBrownieBites(next);
+    if (next >= 3) {
+      soundManager.playAchievement();
+    }
+  };
 
   const handleKunefeClick = () => {
     soundManager.playPop();
@@ -129,6 +139,15 @@ export const ApprovedMenu: React.FC<ApprovedMenuProps> = ({ onUnlockAchievement 
                     🍔 Katmanla
                   </button>
                 )}
+
+                {item.id === 'browni' && (
+                  <button
+                    onClick={handleBrownieClick}
+                    className="text-xs px-2.5 py-1 rounded-xl bg-pink-700/70 hover:bg-pink-600 text-white font-mono-code transition-all"
+                  >
+                    🍫 Isır ({brownieBites})
+                  </button>
+                )}
               </div>
 
               {/* Feedback messages inside cards */}
@@ -137,6 +156,14 @@ export const ApprovedMenu: React.FC<ApprovedMenuProps> = ({ onUnlockAchievement 
                   {kunefeClicks >= 3
                     ? '“Tamam paylaşmayacağını anladık zaateeen :)”'
                     : 'Peynir uzuyor... Mutluluk artıyor!'}
+                </div>
+              )}
+
+              {item.id === 'browni' && brownieBites > 0 && (
+                <div className="mt-2 text-[11px] text-pink-300 font-serif-italic">
+                  {brownieBites >= 3
+                    ? '“Akışkan çikolata zirveye ulaştı! Bütün yorgunluk eridi gitti 🍫💜”'
+                    : 'Sıcak çikolata kalbe iyi geldi...'}
                 </div>
               )}
 

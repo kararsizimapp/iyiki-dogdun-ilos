@@ -13,6 +13,8 @@ export const launchPurpleConfetti = () => {
   }
 };
 
+export const launchMorKonfeti = launchPurpleConfetti;
+
 export const launchGalatasarayConfetti = () => {
   try {
     confetti({

@@ -88,6 +88,22 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
     }, 1400);
   };
 
+  // Real high-definition automotive photos
+  const carImages: Record<CarModel, { url: string; alt: string; modelName: string; specs: string }> = {
+    tesla: {
+      url: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=1200&q=80',
+      alt: 'Mor Tesla Performance',
+      modelName: 'Tesla Model 3 Dual Motor Performance',
+      specs: '0-100: 3.1 sn • Mor Neon Işıklandırma • Otopilot'
+    },
+    mini: {
+      url: 'https://images.unsplash.com/photo-1541348263662-e0c8de42d1fe?auto=format&fit=crop&w=1200&q=80',
+      alt: 'Mor Mini Cooper S Iconic',
+      modelName: 'Mini Cooper S Iconic Hatchback',
+      specs: 'İkonik Yuvarlak Farlar • Panoramik Tavan • Mor Detaylar • İloş Modu'
+    }
+  };
+
   return (
     <section id="garage-section" className="py-20 px-4 sm:px-6 relative">
       <div className="max-w-5xl mx-auto">
@@ -137,36 +153,62 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
           </div>
 
           {/* Car Stage / Preview */}
-          <div className={`relative rounded-3xl p-8 sm:p-14 bg-gradient-to-b ${selectedColor.bgGradient} border border-purple-600/30 flex flex-col items-center justify-center min-h-[280px] shadow-inner mb-8 transition-colors duration-500`}>
+          <div className={`relative rounded-3xl p-6 sm:p-8 bg-gradient-to-b ${selectedColor.bgGradient} border border-purple-600/30 flex flex-col items-center justify-center min-h-[360px] shadow-inner mb-8 transition-colors duration-500 overflow-hidden`}>
             
             {/* Showroom Lighting Glow */}
             <div
-              className="absolute w-72 h-72 rounded-full blur-3xl pointer-events-none transition-colors duration-500"
+              className="absolute w-96 h-96 rounded-full blur-3xl pointer-events-none transition-colors duration-500 opacity-60"
               style={{ backgroundColor: selectedColor.accentGlow }}
             />
 
-            {/* Visual Representation of Car */}
+            {/* Visual Representation of Car with Real Image */}
             <motion.div
               key={`${selectedCar}-${selectedColor.id}`}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.4 }}
-              className="relative z-10 text-center flex flex-col items-center"
+              initial={{ scale: 0.95, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              transition={{ duration: 0.45 }}
+              className="relative z-10 w-full flex flex-col items-center"
             >
-              <div className="text-7xl sm:text-8xl mb-4 drop-shadow-2xl">
-                {selectedCar === 'tesla' ? '⚡🚗' : '🚗✨'}
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight">
-                {selectedCar === 'tesla' ? 'Tesla Performance' : 'Mini Cooper S'}
-              </h3>
-              <span className="text-xs font-mono-code text-purple-200 mt-1">
-                Gövde Rengi: <strong className="text-pink-300">{selectedColor.name}</strong>
-              </span>
+              {/* Real Car Image Container */}
+              <div className="relative w-full max-w-xl h-64 sm:h-72 rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 bg-black/60 group">
+                <img
+                  src={carImages[selectedCar].url}
+                  alt={carImages[selectedCar].alt}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
+                />
+                
+                {/* Purple Color Tint Overlay */}
+                <div
+                  className="absolute inset-0 mix-blend-color opacity-70 transition-colors duration-500 pointer-events-none"
+                  style={{ backgroundColor: selectedColor.hex }}
+                />
+                <div
+                  className="absolute inset-0 mix-blend-overlay opacity-50 transition-colors duration-500 pointer-events-none"
+                  style={{ backgroundColor: selectedColor.hex }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0b0514] via-transparent to-black/30 pointer-events-none" />
 
-              {/* License Plate Graphic */}
-              <div className="mt-4 px-4 py-1.5 bg-white text-black border-2 border-slate-400 rounded-lg shadow-md flex items-center gap-2 font-mono-code font-bold text-sm tracking-wider">
-                <span className="bg-blue-700 text-white text-[10px] px-1 py-0.5 rounded font-sans font-normal">TR</span>
-                <span>{licensePlate}</span>
+                {/* Badge on Photo */}
+                <div className="absolute top-3 left-3 px-3 py-1 rounded-xl bg-purple-950/80 backdrop-blur-md border border-purple-500/40 text-white text-[11px] font-mono-code font-bold flex items-center gap-1.5 shadow-lg">
+                  <Sparkles className="w-3 h-3 text-pink-400" />
+                  <span>{selectedColor.name} Özel Kaplama</span>
+                </div>
+
+                {/* Mounted License Plate on Car */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white text-black border-2 border-slate-700 rounded-md shadow-2xl flex items-center gap-2 font-mono-code font-bold text-xs sm:text-sm tracking-wider">
+                  <span className="bg-blue-700 text-white text-[10px] px-1 py-0.5 rounded font-sans font-normal">TR</span>
+                  <span>{licensePlate}</span>
+                </div>
+              </div>
+
+              <div className="mt-4 text-center">
+                <h3 className="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
+                  {carImages[selectedCar].modelName}
+                </h3>
+                <p className="text-xs font-mono-code text-purple-300/80 mt-1">
+                  {carImages[selectedCar].specs}
+                </p>
               </div>
             </motion.div>
 

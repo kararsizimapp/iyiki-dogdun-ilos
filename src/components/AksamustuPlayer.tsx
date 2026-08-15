@@ -65,19 +65,6 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
           <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Hidden/Active YouTube Sync Player */}
-          {isPlaying && (
-            <div className="hidden">
-              <iframe
-                width="1"
-                height="1"
-                src="https://www.youtube-nocookie.com/embed/h0mQWe-EPcw?autoplay=1&loop=1&playlist=h0mQWe-EPcw&enablejsapi=1"
-                title="Yalın - Akşamüstü"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              />
-            </div>
-          )}
-
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
             
             {/* Spinning Vinyl / Album Art */}
