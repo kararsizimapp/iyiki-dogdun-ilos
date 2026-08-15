@@ -68,6 +68,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             id="nav-soundtrack-btn"
             onClick={() => {
               soundManager.playPop();
+              const section = document.getElementById('soundtrack-section');
+              if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+              }
               onToggleMusic();
             }}
             title="Yalın - Akşamüstü Çal/Duraklat"

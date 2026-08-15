@@ -29,6 +29,9 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
   const [showLyrics, setShowLyrics] = useState(true);
   const [showVideo, setShowVideo] = useState(false);
 
+  // Auto show video if user toggles play or requests it
+  const isPlayerActive = isPlaying || showVideo;
+
   // Cycle lyrics when playing
   useEffect(() => {
     if (!isPlaying) return;
@@ -73,7 +76,10 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
                 animate={{ rotate: isPlaying ? 360 : 0 }}
                 transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
                 className="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-gradient-to-tr from-purple-950 via-zinc-900 to-purple-900 border-4 border-purple-500/40 shadow-2xl flex items-center justify-center relative p-3 group cursor-pointer"
-                onClick={onTogglePlay}
+                onClick={() => {
+                  soundManager.playPop();
+                  onTogglePlay();
+                }}
               >
                 {/* Vinyl Grooves */}
                 <div className="w-full h-full rounded-full border border-purple-700/30 flex items-center justify-center">
@@ -102,7 +108,7 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
               
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-2">
                 <span className="px-2.5 py-0.5 rounded-full bg-pink-950/60 border border-pink-700/40 text-pink-300 text-[11px] font-mono-code font-semibold">
-                  ÖZEL YOUTUBE PARÇASI
+                  ORİJİNAL PARÇA
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-purple-950/60 border border-purple-700/40 text-purple-300 text-[11px] font-mono-code">
                   28. Yaş Resmi Şarkısı
@@ -113,7 +119,7 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
                 Akşamüstü
               </h3>
               <p className="text-base text-purple-300 font-medium mt-0.5">
-                Yalın (Orijinal Klip)
+                Yalın (Resmi Kayıt)
               </p>
 
               {/* Animated Equalizer Bars */}
@@ -151,7 +157,6 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
                 <button
                   id="soundtrack-play-btn"
                   onClick={() => {
-                    soundManager.initContext();
                     soundManager.playPop();
                     onTogglePlay();
                   }}
@@ -180,7 +185,7 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
                   }`}
                 >
                   <Video className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-400 shrink-0" />
-                  <span>{showVideo ? 'Klibi Gizle' : 'Orijinal Klip'}</span>
+                  <span>{showVideo ? 'Klibi Kapat' : 'Klibi Göster'}</span>
                 </button>
 
                 {/* Mute SFX / Audio toggle */}
@@ -234,19 +239,35 @@ export const AksamustuPlayer: React.FC<AksamustuPlayerProps> = ({
 
           </div>
 
-          {/* YouTube Video Player Embed Section */}
+          {/* YouTube Real Player Embed Section (Shows when Playing or Video is toggled) */}
           <AnimatePresence>
-            {showVideo && (
+            {isPlayerActive && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 className="mt-8 pt-6 border-t border-purple-800/40"
               >
-                <div className="aspect-video w-full rounded-2xl overflow-hidden border border-purple-700/50 shadow-2xl bg-black">
+                <div className="flex items-center justify-between mb-3 text-xs font-mono-code text-purple-300">
+                  <span className="flex items-center gap-1.5 text-pink-400 font-bold">
+                    <span className="w-2 h-2 rounded-full bg-pink-500 animate-ping inline-block" />
+                    Yalın — Akşamüstü (Resmi YouTube Oynatıcı)
+                  </span>
+                  <button
+                    onClick={() => {
+                      if (isPlaying) onTogglePlay();
+                      setShowVideo(false);
+                    }}
+                    className="text-purple-400 hover:text-pink-300 text-[11px] underline"
+                  >
+                    Kapat / Durdur
+                  </button>
+                </div>
+                
+                <div className="aspect-video w-full max-h-[380px] rounded-2xl overflow-hidden border border-purple-600/50 shadow-2xl bg-black">
                   <iframe
                     className="w-full h-full"
-                    src="https://www.youtube-nocookie.com/embed/h0mQWe-EPcw?autoplay=1"
+                    src={`https://www.youtube-nocookie.com/embed/h0mQWe-EPcw?autoplay=1&playsinline=1&enablejsapi=1&rel=0`}
                     title="Yalın - Akşamüstü (Resmi Video)"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen

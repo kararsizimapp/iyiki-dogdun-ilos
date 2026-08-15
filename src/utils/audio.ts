@@ -36,11 +36,6 @@ class SoundManager {
 
   public setMuted(muted: boolean) {
     this.isMuted = muted;
-    if (muted && this.isPlayingMusic) {
-      this.stopMelodyLoop();
-    } else if (!muted && this.isPlayingMusic) {
-      this.startMelodyLoop();
-    }
   }
 
   public getIsMuted(): boolean {
@@ -274,122 +269,22 @@ class SoundManager {
     }
   }
 
-  // --- Relaxing Lofi / Acoustic "Akşamüstü" Melodic WebAudio Engine ---
-  private playNote(freq: number, duration: number, type: OscillatorType = 'sine', volume: number = 0.08) {
-    if (this.isMuted || !this.ctx) return;
-    try {
-      const now = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, now);
-
-      gain.gain.setValueAtTime(volume, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-
-      osc.start(now);
-      osc.stop(now + duration);
-    } catch {
-      // ignore
-    }
-  }
-
-  private startMelodyLoop() {
-    this.stopMelodyLoop();
-    this.initContext();
-
-    // Akşamüstü melodic motifs & chord progressions (Frequencies in Hz)
-    // Em: E3 (164.81), G3 (196.00), B3 (246.94), E4 (329.63)
-    // C : C3 (130.81), E3 (164.81), G3 (196.00), C4 (261.63)
-    // G : G2 (98.00), D3 (146.83), G3 (196.00), B3 (246.94)
-    // D : D3 (146.83), F#3 (185.00), A3 (220.00), D4 (293.66)
-    const melodySteps = [
-      // Measure 1: Em
-      { bass: 164.81, chord: [246.94, 329.63], lead: 493.88, dur: 0.9 }, // B4
-      { bass: 196.00, chord: [329.63, 392.00], lead: 440.00, dur: 0.6 }, // A4
-      { bass: 246.94, chord: [392.00, 493.88], lead: 392.00, dur: 0.8 }, // G4
-      { bass: 164.81, chord: [246.94, 329.63], lead: 329.63, dur: 0.7 }, // E4
-
-      // Measure 2: C
-      { bass: 130.81, chord: [196.00, 261.63], lead: 392.00, dur: 0.8 }, // G4
-      { bass: 164.81, chord: [261.63, 329.63], lead: 440.00, dur: 0.6 }, // A4
-      { bass: 196.00, chord: [329.63, 392.00], lead: 493.88, dur: 0.9 }, // B4
-      { bass: 261.63, chord: [392.00, 523.25], lead: 587.33, dur: 0.8 }, // D5
-
-      // Measure 3: G
-      { bass: 98.00, chord: [196.00, 246.94], lead: 493.88, dur: 0.9 },  // B4
-      { bass: 146.83, chord: [246.94, 293.66], lead: 440.00, dur: 0.6 }, // A4
-      { bass: 196.00, chord: [293.66, 392.00], lead: 392.00, dur: 0.8 }, // G4
-      { bass: 246.94, chord: [392.00, 493.88], lead: 329.63, dur: 0.7 }, // E4
-
-      // Measure 4: D
-      { bass: 146.83, chord: [220.00, 293.66], lead: 370.00, dur: 0.8 }, // F#4
-      { bass: 185.00, chord: [293.66, 370.00], lead: 440.00, dur: 0.7 }, // A4
-      { bass: 220.00, chord: [370.00, 440.00], lead: 493.88, dur: 0.9 }, // B4
-      { bass: 146.83, chord: [220.00, 293.66], lead: 392.00, dur: 1.1 }  // G4
-    ];
-
-    this.musicStep = 0;
-
-    const playNextStep = () => {
-      if (!this.isPlayingMusic || this.isMuted) return;
-
-      const step = melodySteps[this.musicStep % melodySteps.length];
-      
-      // Warm bass tone
-      this.playNote(step.bass, step.dur * 1.2, 'triangle', 0.05);
-      
-      // Soft ambient harmony chords
-      step.chord.forEach((freq) => {
-        this.playNote(freq, step.dur * 0.9, 'sine', 0.03);
-      });
-
-      // Sweet mellow lead melody
-      this.playNote(step.lead, step.dur * 0.8, 'sine', 0.07);
-
-      this.musicStep++;
-      // Next note timing (lofi chilled tempo ~680ms per beat)
-      this.musicTimeout = window.setTimeout(playNextStep, 680);
-    };
-
-    playNextStep();
-  }
-
-  private stopMelodyLoop() {
-    if (this.musicTimeout) {
-      clearTimeout(this.musicTimeout);
-      this.musicTimeout = null;
-    }
-  }
+  // --- Sound Effects ---
 
   public toggleMusic(onStateChange?: (playing: boolean) => void): boolean {
     this.initContext();
-    if (this.isPlayingMusic) {
-      this.stopMusic();
-      onStateChange?.(false);
-      return false;
-    } else {
-      this.startMusic();
-      onStateChange?.(true);
-      return true;
-    }
+    this.isPlayingMusic = !this.isPlayingMusic;
+    onStateChange?.(this.isPlayingMusic);
+    return this.isPlayingMusic;
   }
 
   public startMusic() {
     this.initContext();
     this.isPlayingMusic = true;
-    if (!this.isMuted) {
-      this.startMelodyLoop();
-    }
   }
 
   public stopMusic() {
     this.isPlayingMusic = false;
-    this.stopMelodyLoop();
   }
 }
 

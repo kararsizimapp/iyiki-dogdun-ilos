@@ -127,20 +127,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0b0514] text-[#f4effa] selection:bg-purple-500 selection:text-white relative">
       
-      {/* Background YouTube Audio Stream (Yalın - Akşamüstü) - Single centralized player */}
-      <div className="fixed -bottom-96 -left-96 w-10 h-10 opacity-0 pointer-events-none overflow-hidden">
-        {isPlayingMusic && !isMuted && (
-          <iframe
-            id="youtube-global-audio-stream"
-            width="320"
-            height="240"
-            src="https://www.youtube-nocookie.com/embed/h0mQWe-EPcw?autoplay=1&loop=1&playlist=h0mQWe-EPcw&enablejsapi=1"
-            title="Yalın - Akşamüstü"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          />
-        )}
-      </div>
-
       {/* Preloader */}
       {!isLoaded && <Preloader onComplete={() => setIsLoaded(true)} />}
 
