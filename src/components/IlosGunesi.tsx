@@ -207,7 +207,7 @@ export const IlosGunesi: React.FC<IlosGunesiProps> = ({ onUnlockAchievement }) =
                 }`}
               >
                 <Glasses className="w-4 h-4" />
-                <span>{sunglassesOn ? 'Gözlük Takıldı 🕶️ (Göz Kamaşması Önlendi)' : 'Gözlük Tak 🕶️'}</span>
+                <span>{sunglassesOn ? 'Gözlük Takıldı 🕶️' : 'Gözlük Tak 🕶️'}</span>
               </button>
             </div>
           </div>

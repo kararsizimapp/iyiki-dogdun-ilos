@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Car, Zap, Sparkles, Check, ShoppingBag, CreditCard, ShieldAlert } from 'lucide-react';
+import { Car, Zap, Sparkles, Check, ShoppingBag, CreditCard, ShieldAlert, Volume2, KeyRound, Gauge, Radio } from 'lucide-react';
 import { soundManager } from '../utils/audio';
 
 interface DreamGarageProps {
@@ -25,6 +25,34 @@ const colors: ColorOption[] = [
   { id: 'pink', name: 'Pembe Termos Tonu', hex: '#ec4899', bgGradient: 'from-pink-900 via-purple-950 to-pink-950', accentGlow: 'rgba(236, 72, 153, 0.5)' }
 ];
 
+interface CarSpecs {
+  modelName: string;
+  category: string;
+  acceleration: string;
+  topSpeed: string;
+  range: string;
+  features: string[];
+}
+
+const carDetails: Record<CarModel, CarSpecs> = {
+  tesla: {
+    modelName: 'Tesla Model 3 Dual Motor Performance',
+    category: 'Elektrikli Performans Sedan',
+    acceleration: '3.1 sn (0-100 km/s)',
+    topSpeed: '261 km/s',
+    range: '547 km',
+    features: ['Otopilot & FSD', 'Cam Panoramik Tavan', 'Mor Neon Ambiyans', 'Yalın Akşamüstü Ses Sistemi']
+  },
+  mini: {
+    modelName: 'Mini Cooper S Iconic Hatchback',
+    category: 'İkonik Şehir & Stil İkonu',
+    acceleration: '6.6 sn (0-100 km/s)',
+    topSpeed: '235 km/s',
+    range: '720 km (Dolu Depo)',
+    features: ['İkonik Yuvarlak Farlar', 'Çift Renk Tavan', 'Mor Dikişli İç Mekan', 'Go-Kart Sürüş Hissi']
+  }
+};
+
 export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement }) => {
   const [selectedCar, setSelectedCar] = useState<CarModel>('tesla');
   const [selectedColor, setSelectedColor] = useState<ColorOption>(colors[0]);
@@ -33,6 +61,9 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
   const [buyMessage, setBuyMessage] = useState<string | null>(null);
   const [mustafaPayMessage, setMustafaPayMessage] = useState<string | null>(null);
   const [secretTeslaToast, setSecretTeslaToast] = useState<{ step: number; text: string } | null>(null);
+  const [isEngineRunning, setIsEngineRunning] = useState(false);
+  const [headlightsOn, setHeadlightsOn] = useState(true);
+  const [actionNotice, setActionNotice] = useState<string | null>(null);
 
   const handleColorChange = (color: ColorOption) => {
     soundManager.playPop();
@@ -65,6 +96,22 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
     }
   };
 
+  const handleToggleEngine = () => {
+    soundManager.playAchievement();
+    setIsEngineRunning(!isEngineRunning);
+    const msg = !isEngineRunning
+      ? (selectedCar === 'tesla' ? '⚡ Tesla Sessiz Güç Modu Aktif (Otopilot Hazır)' : '🏎️ Mini Cooper S Motoru Çalıştırıldı (Vrooom!)')
+      : '🛑 Motor Durduruldu (Park Modu)';
+    setActionNotice(msg);
+    setTimeout(() => setActionNotice(null), 3000);
+  };
+
+  const handleHonkHorn = () => {
+    soundManager.playPop();
+    setActionNotice('📢 *DÜT DÜT!* (İloş Geçiyor, Yolu Açın!)');
+    setTimeout(() => setActionNotice(null), 2500);
+  };
+
   const handleBuyClick = () => {
     soundManager.playClick();
     setIsBuying(true);
@@ -88,22 +135,6 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
     }, 1400);
   };
 
-  // Real high-definition automotive photos
-  const carImages: Record<CarModel, { url: string; alt: string; modelName: string; specs: string }> = {
-    tesla: {
-      url: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=1200&q=80',
-      alt: 'Mor Tesla Performance',
-      modelName: 'Tesla Model 3 Dual Motor Performance',
-      specs: '0-100: 3.1 sn • Mor Neon Işıklandırma • Otopilot'
-    },
-    mini: {
-      url: 'https://images.unsplash.com/photo-1541348263662-e0c8de42d1fe?auto=format&fit=crop&w=1200&q=80',
-      alt: 'Mor Mini Cooper S Iconic',
-      modelName: 'Mini Cooper S Iconic Hatchback',
-      specs: 'İkonik Yuvarlak Farlar • Panoramik Tavan • Mor Detaylar • İloş Modu'
-    }
-  };
-
   return (
     <section id="garage-section" className="py-20 px-4 sm:px-6 relative">
       <div className="max-w-5xl mx-auto">
@@ -112,13 +143,13 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-300 text-xs font-mono-code mb-3">
             <Car className="w-3.5 h-3.5 text-purple-400" />
-            <span>SAHNE 07 • SHOWROOM</span>
+            <span>SAHNE 07 • SHOWROOM & KONFİGÜRATÖR</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight">
             İloş Dream Garage
           </h2>
           <p className="text-sm sm:text-base text-purple-300/70 max-w-lg mx-auto mt-2">
-            Özel configurator ile hayalindeki arabayı ve mor detayları tasarla.
+            Özel dijital configurator ile hayalindeki mor arabayı kişiselleştir ve donanımlarını test et.
           </p>
         </div>
 
@@ -136,7 +167,7 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
               }`}
             >
               <Zap className="w-4 h-4 text-yellow-300" />
-              <span>Tesla Model 3 / Y</span>
+              <span>Tesla Model 3 Performance</span>
             </button>
 
             <button
@@ -148,12 +179,12 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
               }`}
             >
               <Car className="w-4 h-4 text-pink-300" />
-              <span>Mini Cooper</span>
+              <span>Mini Cooper S Iconic</span>
             </button>
           </div>
 
-          {/* Car Stage / Preview */}
-          <div className={`relative rounded-3xl p-6 sm:p-8 bg-gradient-to-b ${selectedColor.bgGradient} border border-purple-600/30 flex flex-col items-center justify-center min-h-[360px] shadow-inner mb-8 transition-colors duration-500 overflow-hidden`}>
+          {/* Car Stage / Futuristic Vector Studio Canvas */}
+          <div className={`relative rounded-3xl p-6 sm:p-10 bg-gradient-to-b ${selectedColor.bgGradient} border border-purple-600/40 flex flex-col items-center justify-center min-h-[400px] shadow-inner mb-8 transition-colors duration-500 overflow-hidden`}>
             
             {/* Showroom Lighting Glow */}
             <div
@@ -161,55 +192,220 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
               style={{ backgroundColor: selectedColor.accentGlow }}
             />
 
-            {/* Visual Representation of Car with Real Image */}
+            {/* Futuristic Studio Grid Ground */}
+            <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none opacity-40" />
+
+            {/* Quick Interactive Tool Strip */}
+            <div className="w-full flex flex-wrap items-center justify-between gap-2 z-20 mb-4">
+              <div className="px-3 py-1 rounded-xl bg-black/60 backdrop-blur-md border border-purple-500/40 text-white text-[10px] sm:text-[11px] font-mono-code font-bold flex items-center gap-1.5 shadow-lg">
+                <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+                <span>{selectedColor.name}</span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <button
+                  onClick={() => setHeadlightsOn(!headlightsOn)}
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-mono-code border transition-all flex items-center gap-1 ${
+                    headlightsOn ? 'bg-yellow-400 text-black border-yellow-300 font-bold' : 'bg-black/60 text-purple-200 border-purple-700/50'
+                  }`}
+                >
+                  <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  <span>{headlightsOn ? 'Farlar Açık' : 'Farlar'}</span>
+                </button>
+
+                <button
+                  onClick={handleHonkHorn}
+                  className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-mono-code bg-black/60 hover:bg-purple-900/60 border border-purple-700/50 text-purple-200 transition-all flex items-center gap-1"
+                >
+                  <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-pink-400" />
+                  <span>Korna</span>
+                </button>
+
+                <button
+                  onClick={handleToggleEngine}
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-mono-code border transition-all flex items-center gap-1 ${
+                    isEngineRunning
+                      ? 'bg-emerald-500 text-black border-emerald-400 font-bold animate-pulse'
+                      : 'bg-black/60 text-purple-200 border-purple-700/50 hover:bg-purple-900/60'
+                  }`}
+                >
+                  <KeyRound className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  <span>{isEngineRunning ? 'Çalışıyor' : 'Start'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Dynamic Vector Studio Car Silhouette */}
             <motion.div
               key={`${selectedCar}-${selectedColor.id}`}
               initial={{ scale: 0.95, opacity: 0, y: 10 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className="relative z-10 w-full flex flex-col items-center"
+              className="relative z-10 w-full max-w-2xl flex flex-col items-center mt-8"
             >
-              {/* Real Car Image Container */}
-              <div className="relative w-full max-w-xl h-64 sm:h-72 rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 bg-black/60 group">
-                <img
-                  src={carImages[selectedCar].url}
-                  alt={carImages[selectedCar].alt}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
-                />
+              {/* Futuristic Vector Car Drawing */}
+              <div className="relative w-full h-56 sm:h-64 flex items-center justify-center">
                 
-                {/* Purple Color Tint Overlay */}
-                <div
-                  className="absolute inset-0 mix-blend-color opacity-70 transition-colors duration-500 pointer-events-none"
-                  style={{ backgroundColor: selectedColor.hex }}
-                />
-                <div
-                  className="absolute inset-0 mix-blend-overlay opacity-50 transition-colors duration-500 pointer-events-none"
-                  style={{ backgroundColor: selectedColor.hex }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0b0514] via-transparent to-black/30 pointer-events-none" />
+                {/* Headlight Beam Effect */}
+                {headlightsOn && (
+                  <>
+                    <div className="absolute right-8 top-28 w-44 h-16 bg-gradient-to-r from-yellow-200/40 via-yellow-100/10 to-transparent blur-md transform rotate-6 pointer-events-none" />
+                    <div className="absolute left-8 top-28 w-44 h-16 bg-gradient-to-l from-yellow-200/40 via-yellow-100/10 to-transparent blur-md transform -rotate-6 pointer-events-none" />
+                  </>
+                )}
 
-                {/* Badge on Photo */}
-                <div className="absolute top-3 left-3 px-3 py-1 rounded-xl bg-purple-950/80 backdrop-blur-md border border-purple-500/40 text-white text-[11px] font-mono-code font-bold flex items-center gap-1.5 shadow-lg">
-                  <Sparkles className="w-3 h-3 text-pink-400" />
-                  <span>{selectedColor.name} Özel Kaplama</span>
-                </div>
+                {/* SVG Silhouette */}
+                <svg
+                  viewBox="0 0 500 200"
+                  className="w-full h-full drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] filter transition-all duration-500"
+                  style={{ filter: `drop-shadow(0 0 25px ${selectedColor.hex}60)` }}
+                >
+                  {/* Underglow Neon Bar */}
+                  <rect
+                    x="100"
+                    y="160"
+                    width="300"
+                    height="6"
+                    rx="3"
+                    fill={selectedColor.hex}
+                    className="animate-pulse"
+                  />
 
-                {/* Mounted License Plate on Car */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white text-black border-2 border-slate-700 rounded-md shadow-2xl flex items-center gap-2 font-mono-code font-bold text-xs sm:text-sm tracking-wider">
+                  {/* Car Body Geometry */}
+                  {selectedCar === 'tesla' ? (
+                    // Sleek Aerodynamic Tesla Silhouette
+                    <g>
+                      {/* Car Body Main */}
+                      <path
+                        d="M 50,150 C 60,140 100,135 140,130 C 180,100 230,80 320,80 C 390,80 430,110 460,135 C 475,145 480,155 470,160 L 50,160 Z"
+                        fill={selectedColor.hex}
+                        opacity="0.9"
+                      />
+                      {/* Metallic Highlight Gradient Top */}
+                      <path
+                        d="M 145,128 C 185,98 232,82 320,82 C 385,82 422,110 448,132"
+                        stroke="#ffffff"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        fill="none"
+                        opacity="0.4"
+                      />
+                      {/* Panoramic Glass Roof */}
+                      <path
+                        d="M 180,120 C 210,95 250,88 320,88 C 365,88 395,105 415,120 Z"
+                        fill="#0c0714"
+                        stroke={selectedColor.hex}
+                        strokeWidth="2"
+                      />
+                      {/* Aerodynamic Body Crease */}
+                      <path
+                        d="M 80,142 Q 250,132 445,140"
+                        stroke="rgba(255,255,255,0.3)"
+                        strokeWidth="2"
+                        fill="none"
+                      />
+                      {/* LED Headlights */}
+                      <ellipse cx="455" cy="138" rx="8" ry="4" fill={headlightsOn ? '#fef08a' : '#581c87'} />
+                      <ellipse cx="65" cy="142" rx="8" ry="4" fill="#ef4444" />
+                    </g>
+                  ) : (
+                    // Classic Mini Cooper Silhouette with Rounded Curves & Dual Roof
+                    <g>
+                      {/* White / Black Contrast Roof */}
+                      <path
+                        d="M 170,80 L 340,80 C 355,80 365,90 365,100 L 150,100 C 150,90 158,80 170,80 Z"
+                        fill="#ffffff"
+                        opacity="0.95"
+                      />
+                      {/* Mini Body */}
+                      <path
+                        d="M 70,155 C 75,130 90,115 150,105 L 365,105 C 410,115 440,128 450,155 L 70,155 Z"
+                        fill={selectedColor.hex}
+                        opacity="0.95"
+                      />
+                      {/* Windows */}
+                      <path
+                        d="M 160,108 L 245,108 L 245,128 L 140,128 Z"
+                        fill="#120822"
+                        stroke="rgba(255,255,255,0.2)"
+                      />
+                      <path
+                        d="M 255,108 L 350,108 L 365,128 L 255,128 Z"
+                        fill="#120822"
+                        stroke="rgba(255,255,255,0.2)"
+                      />
+                      {/* Iconic Round Headlights */}
+                      <circle cx="438" cy="135" r="10" fill={headlightsOn ? '#fef08a' : '#6b21a8'} stroke="#ffffff" strokeWidth="2" />
+                      <circle cx="85" cy="138" r="8" fill="#ef4444" stroke="#ffffff" strokeWidth="1.5" />
+                    </g>
+                  )}
+
+                  {/* Left Wheel */}
+                  <g transform="translate(120, 160)">
+                    <circle cx="0" cy="0" r="28" fill="#0f071a" stroke="#475569" strokeWidth="4" />
+                    <circle cx="0" cy="0" r="16" fill="#1e1b4b" stroke={selectedColor.hex} strokeWidth="3" />
+                    <circle cx="0" cy="0" r="6" fill="#ffffff" />
+                  </g>
+
+                  {/* Right Wheel */}
+                  <g transform="translate(380, 160)">
+                    <circle cx="0" cy="0" r="28" fill="#0f071a" stroke="#475569" strokeWidth="4" />
+                    <circle cx="0" cy="0" r="16" fill="#1e1b4b" stroke={selectedColor.hex} strokeWidth="3" />
+                    <circle cx="0" cy="0" r="6" fill="#ffffff" />
+                  </g>
+                </svg>
+
+                {/* Mounted Physical License Plate on Showroom Bumper */}
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 bg-white text-black border-2 border-slate-700 rounded-md shadow-2xl flex items-center gap-2 font-mono-code font-bold text-xs sm:text-sm tracking-wider z-20">
                   <span className="bg-blue-700 text-white text-[10px] px-1 py-0.5 rounded font-sans font-normal">TR</span>
                   <span>{licensePlate}</span>
                 </div>
               </div>
 
-              <div className="mt-4 text-center">
+              {/* Vehicle Title & Dynamic Category */}
+              <div className="mt-6 text-center">
                 <h3 className="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
-                  {carImages[selectedCar].modelName}
+                  {carDetails[selectedCar].modelName}
                 </h3>
-                <p className="text-xs font-mono-code text-purple-300/80 mt-1">
-                  {carImages[selectedCar].specs}
+                <p className="text-xs font-mono-code text-purple-300/90 mt-1">
+                  {carDetails[selectedCar].category}
                 </p>
               </div>
+
+              {/* Specs Bento Badges */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full mt-5">
+                <div className="p-2.5 rounded-xl bg-black/40 border border-purple-800/40 text-center">
+                  <span className="text-[10px] text-purple-300/70 font-mono-code block">Hızlanma (0-100)</span>
+                  <span className="text-xs font-bold text-white font-mono-code">{carDetails[selectedCar].acceleration}</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-black/40 border border-purple-800/40 text-center">
+                  <span className="text-[10px] text-purple-300/70 font-mono-code block">Maksimum Hız</span>
+                  <span className="text-xs font-bold text-white font-mono-code">{carDetails[selectedCar].topSpeed}</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-black/40 border border-purple-800/40 text-center">
+                  <span className="text-[10px] text-purple-300/70 font-mono-code block">Menzil / Kapasite</span>
+                  <span className="text-xs font-bold text-white font-mono-code">{carDetails[selectedCar].range}</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-black/40 border border-purple-800/40 text-center">
+                  <span className="text-[10px] text-purple-300/70 font-mono-code block">İloş Donanım</span>
+                  <span className="text-xs font-bold text-pink-300 font-mono-code">VIP Özel Paket</span>
+                </div>
+              </div>
+
+              {/* Action notice banner */}
+              <AnimatePresence>
+                {actionNotice && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="mt-4 px-4 py-2 rounded-xl bg-purple-950/90 border border-pink-400/50 text-xs text-pink-200 font-mono-code font-bold shadow-lg"
+                  >
+                    {actionNotice}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
             </motion.div>
 
           </div>
@@ -220,7 +416,7 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
             {/* Color Swatches */}
             <div>
               <label className="text-xs font-mono-code text-purple-300 uppercase tracking-wider block mb-3">
-                1. Renk Seçimi:
+                1. Renk & Kaplama Seçimi:
               </label>
               <div className="flex flex-wrap gap-2.5">
                 {colors.map((c) => (
@@ -337,3 +533,4 @@ export const DreamGarage: React.FC<DreamGarageProps> = ({ onUnlockAchievement })
     </section>
   );
 };
+

@@ -188,9 +188,9 @@ export const HeroScene: React.FC<HeroSceneProps> = ({
           className="flex flex-col sm:flex-row items-center gap-4 mt-2"
         >
           <a
-            href="#os-section"
+            href="#soundtrack-section"
             id="hero-enter-btn"
-            onClick={() => {
+            onClick={(e) => {
               soundManager.playAchievement();
               onEnterUniverse();
             }}

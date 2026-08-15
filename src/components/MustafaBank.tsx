@@ -22,7 +22,11 @@ const INITIAL_BILLS: BillItem[] = [
   { id: '6', title: 'Hayalindeki Mor Tesla & Mini', category: 'Rüya Garaj', amount: '3.500.000 TL', icon: '🚗', paid: false }
 ];
 
-export const MustafaBank: React.FC = () => {
+interface MustafaBankProps {
+  onUnlockAchievement?: (id: string) => void;
+}
+
+export const MustafaBank: React.FC<MustafaBankProps> = ({ onUnlockAchievement }) => {
   const [bills, setBills] = useState<BillItem[]>(INITIAL_BILLS);
   const [customTitle, setCustomTitle] = useState('');
   const [customAmount, setCustomAmount] = useState('');
@@ -32,6 +36,9 @@ export const MustafaBank: React.FC = () => {
     soundManager.playAchievement();
     soundManager.playCash();
     launchGrandBirthdayConfetti();
+    if (onUnlockAchievement) {
+      onUnlockAchievement('mustafabank');
+    }
     setBills((prev) =>
       prev.map((b) => (b.id === id ? { ...b, paid: true } : b))
     );
@@ -43,6 +50,9 @@ export const MustafaBank: React.FC = () => {
     soundManager.playAchievement();
     soundManager.playCash();
     launchGrandBirthdayConfetti();
+    if (onUnlockAchievement) {
+      onUnlockAchievement('mustafabank');
+    }
     setBills((prev) => prev.map((b) => ({ ...b, paid: true })));
     setLastPaidItem('Tüm Harcamalar ve Faturalar');
     setTimeout(() => setLastPaidItem(null), 3500);
@@ -62,6 +72,9 @@ export const MustafaBank: React.FC = () => {
     soundManager.playAchievement();
     soundManager.playCash();
     launchGrandBirthdayConfetti();
+    if (onUnlockAchievement) {
+      onUnlockAchievement('mustafabank');
+    }
     setBills((prev) => [newBill, ...prev]);
     setLastPaidItem(newBill.title);
     setCustomTitle('');
@@ -190,19 +203,19 @@ export const MustafaBank: React.FC = () => {
           {bills.map((bill) => (
             <div
               key={bill.id}
-              className={`p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+              className={`p-4 rounded-2xl border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
                 bill.paid
                   ? 'bg-purple-950/30 border-purple-800/30 opacity-90'
                   : 'bg-purple-950/60 border-purple-700/50 hover:border-pink-500/50 shadow-md'
               }`}
             >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{bill.icon}</span>
-                <div>
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                <span className="text-2xl shrink-0">{bill.icon}</span>
+                <div className="min-w-0 flex-1">
                   <h4 className="text-sm font-semibold text-white tracking-tight">
                     {bill.title}
                   </h4>
-                  <div className="flex items-center gap-2 mt-0.5">
+                  <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                     <span className="text-[10px] font-mono-code px-2 py-0.5 rounded bg-purple-900/60 text-purple-300">
                       {bill.category}
                     </span>
@@ -213,7 +226,7 @@ export const MustafaBank: React.FC = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="w-full sm:w-auto flex justify-end">
                 {bill.paid ? (
                   <div className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-[11px] font-mono-code font-bold">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
@@ -222,7 +235,7 @@ export const MustafaBank: React.FC = () => {
                 ) : (
                   <button
                     onClick={() => handlePayBill(bill.id, bill.title)}
-                    className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-xs font-semibold shadow-md transition-all whitespace-nowrap"
+                    className="w-full sm:w-auto text-center px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-xs font-semibold shadow-md transition-all whitespace-nowrap"
                   >
                     Mustafa Ödesin 💳
                   </button>

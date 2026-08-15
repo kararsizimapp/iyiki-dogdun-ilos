@@ -71,7 +71,7 @@ export const IlosOS: React.FC<IlosOSProps> = ({ onUnlockAchievement }) => {
         <div className="bg-[#120a21]/90 backdrop-blur-xl border border-purple-700/40 rounded-3xl overflow-hidden shadow-2xl shadow-purple-950/60">
           
           {/* Mac / Terminal Window Bar */}
-          <div className="bg-[#1a0f30] px-4 py-3 border-b border-purple-800/40 flex items-center justify-between">
+          <div className="bg-[#1a0f30] px-3.5 sm:px-4 py-3 border-b border-purple-800/40 flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500/80 border border-red-400/50" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80 border border-yellow-400/50" />
@@ -81,32 +81,32 @@ export const IlosOS: React.FC<IlosOSProps> = ({ onUnlockAchievement }) => {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono-code px-2 py-0.5 rounded bg-purple-900/60 text-purple-200 border border-purple-700/40">
+              <span className="text-[10px] sm:text-[11px] font-mono-code px-2 py-0.5 rounded bg-purple-900/60 text-purple-200 border border-purple-700/40">
                 STATUS: ÇALIŞIYOR (28 YAŞINDA)
               </span>
             </div>
           </div>
 
           {/* Window Body */}
-          <div className="p-6 sm:p-8">
+          <div className="p-4 sm:p-8">
             
             {/* Specs Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
               {systemSpecs.map((spec, index) => (
                 <div
                   key={index}
-                  className="p-3.5 rounded-2xl bg-purple-950/30 border border-purple-800/30 hover:border-purple-600/50 hover:bg-purple-900/20 transition-all flex items-center justify-between"
+                  className="p-3 sm:p-3.5 rounded-2xl bg-purple-950/30 border border-purple-800/30 hover:border-purple-600/50 hover:bg-purple-900/20 transition-all flex flex-row items-center justify-between gap-2"
                 >
-                  <div className="flex flex-col">
-                    <span className="text-[11px] uppercase tracking-wider text-purple-400 font-mono-code">
+                  <div className="flex flex-col min-w-0 pr-2">
+                    <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-purple-400 font-mono-code">
                       {spec.label}
                     </span>
-                    <span className="text-sm font-semibold text-purple-100 mt-0.5">
+                    <span className="text-xs sm:text-sm font-semibold text-purple-100 mt-0.5 truncate">
                       {spec.value}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-900/50 border border-purple-700/30 text-purple-300 font-medium">
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-900/50 border border-purple-700/30 text-purple-300 font-medium whitespace-nowrap">
                       {spec.tag}
                     </span>
                     {spec.label.includes('Mustafa') && (
@@ -115,10 +115,10 @@ export const IlosOS: React.FC<IlosOSProps> = ({ onUnlockAchievement }) => {
                           soundManager.playClick();
                           setShowDetailsModal(true);
                         }}
-                        className="text-xs px-2 py-0.5 rounded bg-purple-800/60 hover:bg-purple-700 text-purple-200 border border-purple-500/40 font-mono-code flex items-center gap-1 transition-colors"
+                        className="text-[11px] px-2 py-0.5 rounded bg-purple-800/60 hover:bg-purple-700 text-purple-200 border border-purple-500/40 font-mono-code flex items-center gap-1 transition-colors whitespace-nowrap"
                       >
                         <Info className="w-3 h-3 text-pink-300" />
-                        <span>[DETAYLAR]</span>
+                        <span>[DETAY]</span>
                       </button>
                     )}
                   </div>

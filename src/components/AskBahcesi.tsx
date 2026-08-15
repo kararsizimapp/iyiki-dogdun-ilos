@@ -199,7 +199,7 @@ export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) =
                     initial={{ opacity: 0, scale: 0.8, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="absolute -top-6 bg-pink-950 border border-pink-500 text-pink-100 text-xs px-3 py-1.5 rounded-xl shadow-xl z-20 font-medium"
+                    className="absolute -top-8 left-1/2 -translate-x-1/2 w-11/12 max-w-xs bg-pink-950/95 border border-pink-500 text-pink-100 text-[11px] sm:text-xs px-3 py-1.5 rounded-xl shadow-xl z-20 font-medium text-center backdrop-blur-md"
                   >
                     {catSpeech}
                   </motion.div>
@@ -251,7 +251,7 @@ export const AskBahcesi: React.FC<AskBahcesiProps> = ({ onUnlockAchievement }) =
                     initial={{ opacity: 0, scale: 0.8, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="absolute -top-6 bg-purple-950 border border-purple-500 text-purple-100 text-xs px-3 py-1.5 rounded-xl shadow-xl z-20 font-medium"
+                    className="absolute -top-8 left-1/2 -translate-x-1/2 w-11/12 max-w-xs bg-purple-950/95 border border-purple-500 text-purple-100 text-[11px] sm:text-xs px-3 py-1.5 rounded-xl shadow-xl z-20 font-medium text-center backdrop-blur-md"
                   >
                     {dogSpeech}
                   </motion.div>

@@ -21,7 +21,11 @@ const DESTINATION_POINTS = [
   'Dünyanın En Güzel Köşesi'
 ];
 
-export const UberMustafa: React.FC = () => {
+interface UberMustafaProps {
+  onUnlockAchievement?: (id: string) => void;
+}
+
+export const UberMustafa: React.FC<UberMustafaProps> = ({ onUnlockAchievement }) => {
   const [pickup, setPickup] = useState(PICKUP_POINTS[0]);
   const [destination, setDestination] = useState(DESTINATION_POINTS[0]);
   const [hasCoffee, setHasCoffee] = useState(true);
@@ -37,6 +41,9 @@ export const UberMustafa: React.FC = () => {
     soundManager.playAchievement();
     soundManager.playPop();
     setIsCalling(true);
+    if (onUnlockAchievement) {
+      onUnlockAchievement('uber-mustafa');
+    }
 
     setTimeout(() => {
       setRideStatus({
