@@ -31,6 +31,8 @@ import { EnGuzelKadin } from './components/EnGuzelKadin';
 import { IlosTarot } from './components/IlosTarot';
 import { SanalMorOrkide } from './components/SanalMorOrkide';
 import { IlosGunesi } from './components/IlosGunesi';
+import { TorpilliTarotCarki } from './components/TorpilliTarotCarki';
+import { SurprizKutulari } from './components/SurprizKutulari';
 import { EmotionalSection } from './components/EmotionalSection';
 import { FinalSurpriseModal } from './components/FinalSurpriseModal';
 import { AchievementsModal } from './components/AchievementsModal';
@@ -264,6 +266,12 @@ export default function App() {
 
             {/* İloş Güneş Modu & Sıcak Işık Huzmesi */}
             <IlosGunesi onUnlockAchievement={unlockAchievement} />
+
+            {/* İloş'un Torpilli Tarot Kartları & Şans Çarkı */}
+            <TorpilliTarotCarki onUnlockAchievement={unlockAchievement} />
+
+            {/* 28 Yaş — 28 Gizli Sürpriz Kutusu */}
+            <SurprizKutulari onUnlockAchievement={unlockAchievement} />
 
             <EmotionalSection onOpenFinalSurprise={() => setIsFinalSurpriseOpen(true)} />
           </main>

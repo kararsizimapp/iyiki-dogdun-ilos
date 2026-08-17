@@ -205,6 +205,24 @@ export const initialAchievements: Achievement[] = [
     iconName: 'Sun',
     unlocked: false,
     category: 'secret'
+  },
+  {
+    id: 'sans-carki-kralicesi',
+    title: 'Şans Çarkı Kraliçesi',
+    description: 'İloş’un Torpilli Şans Çarkını çevirerek Mustafa Can’dan ömür boyu geçerli imtiyaz kazandın.',
+    hint: 'Torpilli Şans Çarkını çevir',
+    iconName: 'Sparkles',
+    unlocked: false,
+    category: 'general'
+  },
+  {
+    id: 'surpriz-koleksiyoneri',
+    title: '28/28 Sürpriz Koleksiyoneri',
+    description: 'Mustafa’nın 28 yaş için hazırladığı 28 gizli sürpriz kutusunun tamamını açtın.',
+    hint: '28 Gizli Sürpriz Kutusunun hepsini aç',
+    iconName: 'Gift',
+    unlocked: false,
+    category: 'secret'
   }
 ];
 

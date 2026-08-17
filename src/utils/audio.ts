@@ -154,6 +154,39 @@ class SoundManager {
     }
   }
 
+  public playSparkle() {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx) return;
+
+    try {
+      const now = this.ctx.currentTime;
+      const notes = [1046.5, 1318.5, 1567.98, 2093.0];
+      notes.forEach((freq, i) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + i * 0.05);
+
+        gain.gain.setValueAtTime(0.08, now + i * 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.15);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now + i * 0.05);
+        osc.stop(now + i * 0.05 + 0.15);
+      });
+    } catch {
+      // ignore
+    }
+  }
+
+  public playSuccess() {
+    this.playAchievement();
+  }
+
   public playBuzzer() {
     if (this.isMuted) return;
     this.initContext();

@@ -42,65 +42,98 @@ export const EmotionalSection: React.FC<EmotionalSectionProps> = ({ onOpenFinalS
             28
           </motion.div>
 
-          <div className="mt-8 space-y-4 text-base sm:text-lg text-purple-200/90 font-light leading-relaxed max-w-xl mx-auto">
-            <p>28 yıl.</p>
-            <p>Bir sürü insan.</p>
-            <p>Bir sürü gün.</p>
-            <p className="text-pink-300 font-medium">Bir sürü “zaateeen”.</p>
-            <p className="pt-2 text-purple-100">Ve farkında olmadan biriktirdiğin bir sürü küçük iz.</p>
+          <div className="mt-8 space-y-4 text-base sm:text-lg text-purple-200/95 font-light leading-relaxed max-w-xl mx-auto">
+            <p className="text-xl sm:text-2xl font-display font-semibold text-white">28 koskoca yıl.</p>
+            <p>Binlerce insan geldi geçti bu dünyadan, ama senin gibi bakan, senin gibi gülen bir ikincisi daha geçmedi.</p>
+            <p>Bir sürü gün, sayfalarca soru, kahve kokulu sabahlar ve uykusuz geceler...</p>
+            <p className="text-pink-300 font-semibold text-lg">Ve o en tatlı, en vazgeçilmez “zaateeen”ler...</p>
+            <p className="pt-2 text-purple-100 font-normal">
+              Sen belki hiç farkında bile değilsin ama, geçtiğin her yerde arkanda silinmeyecek büyüleyici izler bırakıyorsun:
+            </p>
           </div>
 
-          <div className="my-10 p-6 sm:p-8 rounded-3xl bg-purple-950/30 border border-purple-800/30 backdrop-blur-md text-left text-xs sm:text-sm text-purple-200/80 space-y-2.5 font-serif-italic max-w-lg mx-auto">
-            <p>• Bir hayvanın önüne bıraktığın mama.</p>
-            <p>• Annenle yaşadığın binlerce sıradan gün.</p>
-            <p>• Çözdüğün bir KPSS sorusu.</p>
-            <p>• İçtiğin bir kahve.</p>
-            <p>• Arkadaşlarının yanında patlattığın saçma bir kahkaha.</p>
-            <p>• Pembe termostan aldığın bir yudum.</p>
-            <p>• Bir maçta Icardi’ye bağırman.</p>
-            <p>• Mor bir şeyi görünce istemsizce ona bakman.</p>
+          <div className="my-10 p-6 sm:p-9 rounded-3xl bg-purple-950/40 border border-purple-700/40 backdrop-blur-xl text-left text-xs sm:text-sm text-purple-100 space-y-3.5 font-serif-italic max-w-xl mx-auto shadow-2xl shadow-purple-950/50">
+            <p className="flex items-start gap-2.5">
+              <span className="text-pink-400 font-bold">✦</span>
+              <span>Sokaktaki masum bir cana mama verirken gözlerinden taşan o saf merhamet ve sıcacık sevgi.</span>
+            </p>
+            <p className="flex items-start gap-2.5">
+              <span className="text-pink-400 font-bold">✦</span>
+              <span>Güldüğün an tüm ortamın enerjisini bir anda değiştiren, en yorgun anları bile aydınlatan o eşsiz gülümsemen.</span>
+            </p>
+            <p className="flex items-start gap-2.5">
+              <span className="text-pink-400 font-bold">✦</span>
+              <span>KPSS masasında uykusuz gecelere rağmen dik duran o hayranlık uyandırıcı azmin, zekân ve asil duruşun.</span>
+            </p>
+            <p className="flex items-start gap-2.5">
+              <span className="text-pink-400 font-bold">✦</span>
+              <span>Pembe termosundan bir yudum kahve içerkenki o zarif, prensesleri kıskandıran doğal zarafetin.</span>
+            </p>
+            <p className="flex items-start gap-2.5">
+              <span className="text-pink-400 font-bold">✦</span>
+              <span>Yalın - Akşamüstü çalarken ritme kendini kaptırışın, rüzgarda salınan saçların ve parıldayan gözlerin.</span>
+            </p>
+            <p className="flex items-start gap-2.5">
+              <span className="text-pink-400 font-bold">✦</span>
+              <span>Galatasaray gol attığında çocuk gibi sevinip Icardi coşkusuyla havaya zıplarkenki o saf neşen.</span>
+            </p>
+            <p className="flex items-start gap-2.5">
+              <span className="text-pink-400 font-bold">✦</span>
+              <span>Mor rengi, bir orkideyi ya da sıcak bir künefeyi görünce gözlerinin içinin çocuk gibi parlaması.</span>
+            </p>
+            <p className="flex items-start gap-2.5">
+              <span className="text-pink-400 font-bold">✦</span>
+              <span>Ve en güzeli; varlığınla Mustafa’nın hayatına kattığın o tarifsiz neşe, anlam ve güven duygusu.</span>
+            </p>
           </div>
 
-          <p className="text-sm sm:text-base text-purple-300/80 font-serif-italic">
-            “İnsan galiba kendisinin başkalarının hayatında bıraktığı küçük şeyleri pek fark etmiyor.”
+          <p className="text-sm sm:text-base text-pink-300/90 font-serif-italic max-w-lg mx-auto px-4">
+            “İnsan galiba kendisinin başkalarının dünyasında ne kadar büyük bir ışık olduğunu pek fark edemiyor. Ama ben her gün hayranlıkla izliyorum.”
           </p>
         </div>
 
         {/* SAHNE 15: İNCE DUYGUSAL BÖLÜM */}
         <div className="my-24 text-center">
-          <span className="text-xs uppercase tracking-widest text-pink-400 font-mono-code mb-3 block">
-            KÜÇÜK BİR NOT
-          </span>
-          <h3 className="text-2xl sm:text-4xl font-display font-bold text-white mb-6">
-            Bir şey daha var İloş.
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pink-950/80 border border-pink-700/50 text-pink-300 text-xs font-mono-code mb-4 shadow-inner">
+            <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+            <span>KÜÇÜK BİR NOT • MUSTAFA'NIN KALBİNDEN</span>
+          </div>
+
+          <h3 className="text-2xl sm:text-4xl md:text-5xl font-display font-black text-white mb-6 tracking-tight">
+            Bir şey daha var İloş...
           </h3>
 
-          <div className="space-y-4 text-sm sm:text-base text-purple-200/90 font-light leading-relaxed max-w-xl mx-auto">
-            <p>Bu siteyi yaparken fark edilen garip bir şey oldu.</p>
-            <p>Bir insanı anlatmaya çalışınca büyük olaylardan önce küçük şeyler geliyor akla.</p>
+          <div className="space-y-5 text-sm sm:text-base text-purple-200/95 font-light leading-relaxed max-w-xl mx-auto">
+            <p className="text-purple-100 font-normal">
+              Bu siteyi satır satır, her bir detayını özenle hazırlarken içimde yankılanan çok net bir gerçek vardı:
+            </p>
+            <p>
+              Bir insana gerçekten değer vermek ve hayran olmak; onun sadece büyük başarılarını değil, dünyada belki kimsenin fark etmeyeceği o en minik, en tatlı ayrıntılarını kalbine kazımakmış.
+            </p>
             
             <div className="py-4 flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm font-mono-code text-pink-300">
-              <span className="px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-700/40">Mor</span>
-              <span className="px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-700/40">Kahve</span>
-              <span className="px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-700/40">Pembe Termos</span>
-              <span className="px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-700/40">Aşk Bahçesi</span>
-              <span className="px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-700/40">Künefe</span>
-              <span className="px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-700/40">Kenks</span>
-              <span className="px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-700/40">Icardi</span>
-              <span className="px-2.5 py-1 rounded-full bg-purple-950/80 border border-purple-700/40">“Zaateeen”</span>
+              <span className="px-3 py-1.5 rounded-full bg-purple-950/90 border border-purple-600/50 shadow-md">💜 Mor Aşkı</span>
+              <span className="px-3 py-1.5 rounded-full bg-purple-950/90 border border-purple-600/50 shadow-md">☕ Sıcak Kahve</span>
+              <span className="px-3 py-1.5 rounded-full bg-purple-950/90 border border-purple-600/50 shadow-md">🌸 Pembe Termos</span>
+              <span className="px-3 py-1.5 rounded-full bg-purple-950/90 border border-purple-600/50 shadow-md">🐾 Aşk Bahçesi Masumları</span>
+              <span className="px-3 py-1.5 rounded-full bg-purple-950/90 border border-purple-600/50 shadow-md">🥞 Çıtır Künefe</span>
+              <span className="px-3 py-1.5 rounded-full bg-purple-950/90 border border-purple-600/50 shadow-md">🤝 Murat'la Kenks Muhabbeti</span>
+              <span className="px-3 py-1.5 rounded-full bg-purple-950/90 border border-purple-600/50 shadow-md">⚽ 90+4 Icardi</span>
+              <span className="px-3 py-1.5 rounded-full bg-purple-950/90 border border-purple-600/50 shadow-md">✨ O Eşsiz Gözlerin</span>
+              <span className="px-3 py-1.5 rounded-full bg-pink-950/90 border border-pink-600/60 text-pink-200 font-bold shadow-md">👑 “Zaateeen”</span>
             </div>
 
             <p className="pt-2">
-              Belki de birini gerçekten tanımak biraz böyle bir şeydir.
+              Senin bir şeye itiraz ederken kaşlarını hafifçe kaldırışını, heyecanla bir şey anlatırken parlayan gözlerini, içindeki o altın gibi merhameti ve kimseye benzemeyen o asil ruhunu tanımak...
             </p>
-            <p>
-              Onun dünyayı değiştiren büyük anlarını değil, kimsenin önemsemeyeceği küçük ayrıntılarını hatırlamak.
+            <p className="text-purple-100 font-medium">
+              Bütün bu detaylar boşuna aklımda değil. Mustafa senin her anına, her kahkahana ve kalbinin güzelliğine en yakından şahit olan insan.
             </p>
-            <p className="pt-4 text-purple-300/70 text-xs sm:text-sm">
-              Neden bu kadar ayrıntıyı hatırladığımı sorma.
+            <p className="pt-4 text-purple-300/80 text-xs sm:text-sm">
+              Neden bu kadar ayrıntıyı tek tek hatırladığımı ve bu kadar önemsediğimi sorma...
             </p>
-            <p className="text-xl sm:text-2xl font-serif-italic font-bold text-pink-400 pt-2">
-              Zaateeen uzun mesele.
+            <p className="text-2xl sm:text-3xl font-serif-italic font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-pink-300 pt-2 animate-pulse">
+              Zaateeen uzun mesele... :))
             </p>
           </div>
         </div>
