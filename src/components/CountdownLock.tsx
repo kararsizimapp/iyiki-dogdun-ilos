@@ -36,13 +36,13 @@ export const CountdownLock: React.FC<CountdownLockProps> = ({
   const [secretPass, setSecretPass] = useState('');
   const [secretError, setSecretError] = useState(false);
 
-  // Target: 20 August 2026 00:00:00 (Guaranteed Turkish Time UTC+3 & Local Time)
+  // Target: 10 August 2026 23:59:00 (Guaranteed Turkish Time UTC+3 & Local Time)
   useEffect(() => {
     const calculateTime = () => {
       const now = Date.now();
-      // Target: 20 August 2026 00:00:00 Turkish Time (GMT+3) & Local Device Midnight
-      const targetTrt = new Date('2026-08-20T00:00:00+03:00').getTime();
-      const targetLocal = new Date(2026, 7, 20, 0, 0, 0).getTime();
+      // Target: 10 August 2026 23:59:00 Turkish Time (GMT+3) & Local Device Time
+      const targetTrt = new Date('2026-08-10T23:59:00+03:00').getTime();
+      const targetLocal = new Date(2026, 7, 10, 23, 59, 0).getTime();
       const targetTime = Math.min(targetTrt, targetLocal);
 
       const diff = targetTime - now;

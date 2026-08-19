@@ -39,8 +39,8 @@ import { AchievementsModal } from './components/AchievementsModal';
 import { FloatingEasterEggs } from './components/FloatingEasterEggs';
 import { Footer } from './components/Footer';
 
-export const TARGET_DATE_TRT = new Date('2026-08-20T00:00:00+03:00').getTime(); // 20 August 2026 00:00:00 TRT
-export const TARGET_DATE_LOCAL = new Date(2026, 7, 20, 0, 0, 0).getTime(); // 20 August 2026 00:00:00 Device Time
+export const TARGET_DATE_TRT = new Date('2026-08-10T23:59:00+03:00').getTime(); // 10 August 2026 23:59:00 TRT
+export const TARGET_DATE_LOCAL = new Date(2026, 7, 10, 23, 59, 0).getTime(); // 10 August 2026 23:59:00 Device Time
 
 export function isTargetDateReached(): boolean {
   if (typeof window !== 'undefined') {
