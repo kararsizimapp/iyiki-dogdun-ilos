@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Terminal, Coffee, CheckCircle, ShieldCheck, Flame, Zap, HelpCircle, Info } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Terminal, Coffee, CheckCircle, Zap } from 'lucide-react';
 import { soundManager } from '../utils/audio';
 
 interface IlosOSProps {
@@ -11,7 +11,6 @@ export const IlosOS: React.FC<IlosOSProps> = ({ onUnlockAchievement }) => {
   const [isRebooting, setIsRebooting] = useState(false);
   const [rebootProgress, setRebootProgress] = useState(0);
   const [rebootFinished, setRebootFinished] = useState(false);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   const handleCoffeeClick = () => {
     if (isRebooting) return;
@@ -45,8 +44,7 @@ export const IlosOS: React.FC<IlosOSProps> = ({ onUnlockAchievement }) => {
     { label: 'Sistem Bildirim Sesi', value: '“Zaateeen”', tag: 'İmza Cümle' },
     { label: 'Hayvan Modu', value: 'Sürekli Açık (Aşk Bahçesi)', tag: 'Koşulsuz Sevgi' },
     { label: 'KPSS Modülü', value: 'Geleceğin Memuru (Yükleniyor)', tag: 'Hedefe Kilitli' },
-    { label: 'Kenks Protokolü', value: 'Murat ile %100 Uyumlu', tag: 'Kenksim' },
-    { label: 'Mustafa Erişimi', value: 'Yakın Arkadaş Yetkisi', tag: 'Gereğinden Fazla Detay' }
+    { label: 'Kenks Protokolü', value: 'Murat ile %100 Uyumlu', tag: 'Kenksim' }
   ];
 
   return (
@@ -109,18 +107,6 @@ export const IlosOS: React.FC<IlosOSProps> = ({ onUnlockAchievement }) => {
                     <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-900/50 border border-purple-700/30 text-purple-300 font-medium whitespace-nowrap">
                       {spec.tag}
                     </span>
-                    {spec.label.includes('Mustafa') && (
-                      <button
-                        onClick={() => {
-                          soundManager.playClick();
-                          setShowDetailsModal(true);
-                        }}
-                        className="text-[11px] px-2 py-0.5 rounded bg-purple-800/60 hover:bg-purple-700 text-purple-200 border border-purple-500/40 font-mono-code flex items-center gap-1 transition-colors whitespace-nowrap"
-                      >
-                        <Info className="w-3 h-3 text-pink-300" />
-                        <span>[DETAY]</span>
-                      </button>
-                    )}
                   </div>
                 </div>
               ))}
@@ -228,34 +214,6 @@ export const IlosOS: React.FC<IlosOSProps> = ({ onUnlockAchievement }) => {
         </div>
 
       </div>
-
-      {/* Details Modal */}
-      <AnimatePresence>
-        {showDetailsModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-[#1a0f30] border border-purple-600/50 rounded-3xl p-6 max-w-md w-full shadow-2xl text-center"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-purple-900/60 border border-purple-500/40 flex items-center justify-center mx-auto mb-4 text-purple-300">
-                <ShieldCheck className="w-6 h-6 text-purple-300" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">Mustafa Erişim Protokolü</h3>
-              <p className="text-sm text-purple-200/90 leading-relaxed bg-purple-950/60 p-4 rounded-xl border border-purple-800/30 font-serif-italic">
-                “Yetki seviyesi: İloş’un saçma sapan huylarının önemli bir bölümünü bilmesine yetecek kadar.”
-              </p>
-              <button
-                onClick={() => setShowDetailsModal(false)}
-                className="mt-6 px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-medium text-xs transition-colors"
-              >
-                Anlaşıldı ✓
-              </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };
